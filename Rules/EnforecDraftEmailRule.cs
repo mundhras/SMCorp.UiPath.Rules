@@ -4,14 +4,14 @@ using UiPath.Studio.Analyzer.Models;
 
 namespace SMCorp.UiPath.Rules
 {
-    internal static class VariableLengthRule
+    internal static class EnforecDraftEmailRule
     {
         internal static Rule<IActivityModel> Get()
         {
-            var rule = new Rule<IActivityModel>(Strings.SMCORP_NMG_001_RuleName, Strings.SMCORP_NMG_001_RuleId, Inspect)
+            var rule = new Rule<IActivityModel>(Strings.SMCORP_USG_001_RuleName, Strings.SMCORP_USG_001_RuleId, Inspect)
             {
-                RecommendationMessage = Strings.SMCORP_NMG_001_Recommendation,
-                DefaultErrorLevel = System.Diagnostics.TraceLevel.Warning,
+                RecommendationMessage = Strings.SMCORP_USG_001_Recommendation,
+                ErrorLevel = System.Diagnostics.TraceLevel.Warning,
                 //Must contain "BusinessRule" to appear in StudioX, rules always appear in Studio
                 ApplicableScopes = new List<string> { Strings.BusinessRule }
             };
@@ -21,11 +21,18 @@ namespace SMCorp.UiPath.Rules
         private static InspectionResult Inspect(IActivityModel activityModel, Rule ruleInstance)
         {
             var messageList = new List<string>();
-            foreach (var activityModelVariable in activityModel.Variables)
+
+            if (activityModel.Type.ToString().Contains("SendMailX"))
             {
-                if (activityModelVariable.DisplayName.Length > 15)
+                foreach (var activityProperty in activityModel.Properties)
                 {
-                    messageList.Add($"The variable {activityModelVariable.DisplayName} has a length longer than 15.");
+                    if (activityProperty.DisplayName == "Save as draft")
+                    {
+                        if (activityProperty.DefinedExpression != "True")
+                        {
+                            messageList.Add($"Send email via automation is not supported please save to draft and review before sending email.");
+                        }
+                    }
                 }
             }
             if (messageList.Count > 0)

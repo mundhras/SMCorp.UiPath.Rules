@@ -9,10 +9,10 @@ namespace SMCorp.UiPath.Rules
     {
         internal static Rule<IProjectModel> Get()
         {
-            var rule = new Rule<IProjectModel>(Strings.SMCORP_USG_003_RuleName, Strings.SMCORP_USG_003_RuleId, Inspect)
+            var rule = new Rule<IProjectModel>(Strings.SMCORP_NMG_003_RuleName, Strings.SMCORP_NMG_003_RuleId, Inspect)
             {
-                RecommendationMessage = Strings.SMCORP_USG_003_Recommendation,
-                ErrorLevel = System.Diagnostics.TraceLevel.Warning,
+                RecommendationMessage = Strings.SMCORP_NMG_003_Recommendation,
+                DefaultErrorLevel = System.Diagnostics.TraceLevel.Warning,
                 //Must contain "BusinessRule" to appear in StudioX, rules always appear in Studio
                 ApplicableScopes = new List<string> { Strings.BusinessRule }
             };

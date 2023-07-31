@@ -13,10 +13,15 @@ namespace SMCorp.UiPath.Rules
         //Registers the rules with Workflow Analyzer
         public void Initialize(IAnalyzerConfigurationService workflowAnalyzerConfigService)
         {
+            if (!workflowAnalyzerConfigService.HasFeature("WorkflowAnalyzerV4"))
+                return;
+
             workflowAnalyzerConfigService.AddRule(VariableLengthRule.Get());
             workflowAnalyzerConfigService.AddRule(VariableLengthRuleProcess.Get());
             workflowAnalyzerConfigService.AddRule(CustomVariableLengthRule.Get());
             workflowAnalyzerConfigService.AddCounter(NumberOfActivitiesInFile.Get());
+            workflowAnalyzerConfigService.AddRule(EnforecDraftEmailRule.Get());
+
         }
     }
 }
